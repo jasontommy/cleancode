@@ -21,18 +21,31 @@ public class Receipt {
     }
 
     public double calculateGrandTotal() {
-        double subTotal = 0;
-        for (double itemTotal : itemTotals) {
-            subTotal += itemTotal;
-        }
+        double subTotal = calculateTotal();
+        subTotal = calculateDiscount(subTotal);
+        subTotal = calculateTax(subTotal);
+        return subTotal;
+    }
 
+    private static double calculateTax(double subTotal) {
+        double tax = subTotal * 0.065;
+        subTotal += tax;
+        return subTotal;
+    }
+
+    private double calculateDiscount(double subTotal) {
         if (discounts.size() > 0) {
             for (double discount : discounts)
                 subTotal -= discount;
         }
+        return subTotal;
+    }
 
-        double tax = subTotal * 0.065;
-        subTotal += tax;
+    private double calculateTotal() {
+        double subTotal = 0;
+        for (double itemTotal : itemTotals) {
+            subTotal += itemTotal;
+        }
         return subTotal;
     }
 }
